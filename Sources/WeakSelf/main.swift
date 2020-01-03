@@ -32,11 +32,30 @@ class A {
     }
 }
 
+//        seqExpr
+//
+
+//        MemberAccessExprSyntax            如: self?.a BB.BB
+//            OptionalChainingExprSyntax
+//                IdentifierExprSyntax
+
+// FunctionCallExpr
+//     IdentifierExprSyntax|MemberAccessExprSyntax|FunctionCallExpr
+//     FunctionCallArgumentListSyntax
+/*
+ CodeBlockItemSyntax                        print(self?.a)
+ FunctionCallExprSyntax                 print
+ FunctionCallArgumentListSyntax
+ [FunctionCallArgumentSyntax]          self?.a
+ */
+
 
 
 let sourceFile = try SyntaxParser.parse(source: source)
 //let x = FindPublicExtensionDeclVisitor().visit(sourceFile)
 
-var visitor = TokenVisitor()
+var visitor = ClosureVisitor()
 sourceFile.walk(&visitor)
 //print(x)
+
+print(visitor.closures.map{$0.description}.joined(separator: "\n"))

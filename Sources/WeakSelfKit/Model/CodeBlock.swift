@@ -12,7 +12,7 @@ import SwiftSyntax
 class CodeBlock {
     var origin: CodeBlockItemSyntax
     let `case`: Case
-    init(origin: CodeBlockItemSyntax) {
+    init(_ origin: CodeBlockItemSyntax) {
         self.origin = origin
         
         let call = Call.gen(origin.item)

@@ -29,43 +29,37 @@ public final class Closure: CustomStringConvertible {
     private var captures: [Capture] = []
     private var inputs: [Input] = []
     
-    public func add(_ node: ClosureExprSyntax) {
+    public init(_ node: ClosureExprSyntax) {
         self.add(node.signature?.capture)
         self.add(node.signature?.input as? ParameterClauseSyntax)
     }
     
     private func add(_ input: ParameterClauseSyntax?) {
-        let params = input?.parameterList.map {$0} ?? []
+        guard let params = input?.parameterList else {return}
+
         for param in params {
             guard let name = param.firstName?.text else {continue}
             guard let theType = (param.type as? SimpleTypeIdentifierSyntax)?.name.text else {
-                self.add(.withName(theName: name))
+                self.inputs.append(.withName(theName: name))
                 continue
             }
             
-            self.add(.withType(theName: name, theType: theType))
+            self.inputs.append(.withType(theName: name, theType: theType))
         }
     }
     
-    private func add(_ input: Input) {
-        self.inputs.append(input)
-    }
-    
     private func add(_ node: ClosureCaptureSignatureSyntax?) {
-        let captures = node?.items?.map{$0} ?? []
+        guard let captures = node?.items else { return }
+        
         for cap in captures {
             guard let kind = cap.specifier?.firstToken?.text else {continue}
             guard let obj = cap.expression.firstToken?.text else {continue}
             guard let name = cap.name?.text else {
-                self.add(.capture(kind: kind, name: obj))
+                self.captures.append(.capture(kind: kind, name: obj))
                 continue
             }
-            self.add(.assign(kind: kind, name: name, obj: obj))
+            self.captures.append(.assign(kind: kind, name: name, obj: obj))
         }
-    }
-    
-    private func add(_ capture: Capture) {
-        self.captures.append(capture)
     }
 }
 
