@@ -8,9 +8,15 @@
 import Foundation
 import SwiftSyntax
 
+extension TokenSequence {
+    var text: String {
+        return self.map {$0.text}.joined(separator: "")
+    }
+}
+
 extension MemberAccessExprSyntax {
     public var baseText: String? {
-        return self.base?.tokens.map{$0.text}.joined(separator: "")
+        return self.base?.tokens.text
     }
     
     public var nameText: String {
@@ -20,6 +26,6 @@ extension MemberAccessExprSyntax {
 
 extension IdentifierExprSyntax {
     public var text: String {
-        self.tokens.map{$0.text}.joined(separator: "")
+        self.tokens.text
     }
 }

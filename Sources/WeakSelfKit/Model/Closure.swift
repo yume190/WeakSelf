@@ -32,6 +32,8 @@ public final class Closure: CustomStringConvertible {
     public init(_ node: ClosureExprSyntax) {
         self.add(node.signature?.capture)
         self.add(node.signature?.input as? ParameterClauseSyntax)
+        let a = node.statements.map {CodeBlock($0)}
+        print(a)
     }
     
     private func add(_ input: ParameterClauseSyntax?) {
