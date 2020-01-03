@@ -9,22 +9,6 @@ import XCTest
 import SwiftSyntax
 @testable import WeakSelfKit
 
-//print("a")
-//BB.bb()
-//_bb2.bb()
-//_bb.bb()
-//self?.bb()(self!)
-//let ccc = self
-//_ = self?.a
-//_ = jjj
-//_ = obj
-//_ = a
-//self?.a = 2
-//if let ss1 = self {
-//
-//}
-//guard let ss2 = self else {return}
-
 class CodeBlockVisitorCallTests: XCTestCase {
 
     func testCallIDString() {

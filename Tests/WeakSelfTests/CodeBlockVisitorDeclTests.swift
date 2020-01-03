@@ -72,7 +72,7 @@ class CodeBlockVisitorDeclTests: XCTestCase {
     
     func testDeclDiscard() {
         let source = """
-        _ = 1
+        _ = a
         """
         
         let sourceFile = try! SyntaxParser.parse(source: source)
