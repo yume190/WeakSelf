@@ -1,26 +1,14 @@
 //
-//  CodeBlock.swift
+//  CodeBlock+Decl.swift
 //  WeakSelfKit
 //
-//  Created by Yume on 2020/1/2.
+//  Created by Yume on 2020/1/6.
 //
 
 import Foundation
 import SwiftSyntax
 
-class CodeBlock {
-    var origin: CodeBlockItemSyntax
-    let `case`: Case
-    init(_ origin: CodeBlockItemSyntax) {
-        self.origin = origin
-        
-        let call = Call.gen(origin.item)
-        let decl = Decl.gen(origin.item)
-        let call2 = Call2(origin.item)
-        
-        self.case = call.case ?? decl.case ?? .unknown
-    }
-    
+extension CodeBlock {
     enum Decl: CustomStringConvertible {
         case declare(decl: String, id: String, eq: String?, value: String?)
         case multiDeclare(decl: String, pair: [(id: String, value: String)], eq: String?)
@@ -51,7 +39,7 @@ class CodeBlock {
                     .map {$0}
                     .filter {
                         return $0 is DiscardAssignmentExprSyntax
-                    }.first
+                }.first
                 guard let _ = discard else { return .unknown }
                 let exprs = seqSyntax.elements.filter {
                     return !($0 is DiscardAssignmentExprSyntax) && !($0 is AssignmentExprSyntax)
@@ -74,31 +62,11 @@ class CodeBlock {
                 return "unknown"
             }
         }
+        
         var `case`: Case? {
             switch self {
             case .unknown: return nil
             default: return .declare(decl: self)
-            }
-        }
-    }
-    enum Other {
-        case ifLet
-        case guardLet
-        case `defer`
-    }
-    
-    enum Case: CustomStringConvertible {
-        case functionCall(call: Call)
-        case declare(decl: Decl)
-        case unknown
-        var description: String {
-            switch self {
-            case .functionCall(let call):
-                return call.description
-            case .declare(let decl):
-                return decl.description
-            default:
-                return "unknown"
             }
         }
     }

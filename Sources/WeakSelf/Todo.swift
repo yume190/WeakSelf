@@ -48,3 +48,20 @@
             IDPattern
     )
  */
+
+//        seqExpr
+
+/*
+ CodeBlockItemSyntax                        print(self?.a)
+ FunctionCallExprSyntax                 print
+ FunctionCallArgumentListSyntax
+ [FunctionCallArgumentSyntax]          self?.a
+ */
+
+//        MemberAccessExprSyntax            如: self?.a BB.BB
+//            OptionalChainingExprSyntax
+//                IdentifierExprSyntax
+
+// FunctionCallExpr
+//     IdentifierExprSyntax|MemberAccessExprSyntax|FunctionCallExpr
+//     FunctionCallArgumentListSyntax
