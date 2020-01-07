@@ -85,7 +85,7 @@ public class Closure: CustomStringConvertible, Encodable {
 }
 
 extension Closure {
-    enum Capture: CustomStringConvertible, Encodable {
+    enum Capture: CustomStringConvertible, Encodable, Identifierable {
         func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encode(self.description)
@@ -101,11 +101,25 @@ extension Closure {
                 return "\(kind) \(name) = \(obj)"
             }
         }
+        
+        var identifiers: [String] {
+            switch self {
+            case .capture(_, let name), .assign(_, let name, _):
+                return [name]
+            }
+        }
     }
 }
 
 extension Closure {
-    enum Input: CustomStringConvertible, Encodable {
+    enum Input: CustomStringConvertible, Encodable, Identifierable {
+        var identifiers: [String] {
+            switch self {
+            case .withName(let name), .withType(let name, _):
+                return [name]
+            }
+        }
+        
         func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             try container.encode(self.description)

@@ -20,7 +20,7 @@ let package = Package(
     targets: [
         .target(name: "WeakSelf", dependencies: [
                 "WeakSelfKit",
-                "SwiftSyntax"
+                // "SwiftSyntax"
             ]
         ),
        .target(

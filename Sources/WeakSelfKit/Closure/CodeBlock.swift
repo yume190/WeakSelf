@@ -8,7 +8,7 @@
 import Foundation
 import SwiftSyntax
 
-class CodeBlock {
+class CodeBlock: Identifiable {
     let origin: CodeBlockItemSyntax
     let `case`: Case
     init(_ origin: CodeBlockItemSyntax) {
@@ -39,8 +39,8 @@ extension CodeBlock: Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self.case {
-        case .declare(_):
-            try container.encode("decl", forKey: .declare)
+        case .declare(let decl):
+            try container.encode(decl.description, forKey: .declare)
         case .functionCall(let call):
             try container.encode(call.identifiers, forKey: .function)
         case .item(let item):

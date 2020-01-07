@@ -15,7 +15,7 @@ extension CodeBlock {
         case function(_ call: Call, _ forced: Bool)
         #warning("closure")
         case closure(_ closure: Int, _ forced: Bool)
-        case unknown
+        case other(_ text: String)
         
         static func gen(_ syntax: Syntax, isForced: Bool = false) -> AccessItem {
             if let id = syntax as? IdentifierExprSyntax {
@@ -30,7 +30,7 @@ extension CodeBlock {
             if let forced = syntax as? ForcedValueExprSyntax {
                 return self.gen(forced.expression, isForced: true)
             }
-            return .unknown
+            return .other(syntax.tokens.text)
         }
         
         var description: String {
@@ -43,8 +43,8 @@ extension CodeBlock {
                 return "\(f.description)\(forced ? "!" : "")"
             case .closure(_, _):
                 return "closure"
-            case .unknown:
-                return "unknown"
+            case .other(let text):
+                return "\(text)"
             }
         }
         
@@ -58,7 +58,7 @@ extension CodeBlock {
                 return f.identifiers
             case .closure(_, _):
                 return []//"clo"
-            case .unknown:
+            case .other:
                 return []
             }
         }
